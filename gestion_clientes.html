@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Clientes</title>
+    <link rel="stylesheet" href="style.css"> <!-- Enlace al archivo CSS -->
+</head>
+<body>
+    <header>
+        <h1>Gestión de Clientes</h1>
+    </header>
+    <main>
+        <form action="guardar_cliente.html" method="post">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+
+            <label for="telefono">Teléfono:</label>
+            <input type="tel" id="telefono" name="telefono">
+
+            <label for="direccion">Dirección:</label>
+            <input type="text" id="direccion" name="direccion">
+
+            <button type="submit">Guardar Cliente</button>
+        </form>
+        <a href="consultar_clientes.html">Consultar Clientes</a>
+    </main>
+</body>
+</html>

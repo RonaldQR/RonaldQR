@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios</title>
+    <link rel="stylesheet" href="style.css"> <!-- Enlace al archivo CSS -->
+</head>
+<body>
+    <header>
+        <h1>Gestión de Usuarios</h1>
+    </header>
+    <main>
+        <form action="guardar_usuario.html" method="post">
+            <label for="nombre">Nombre de Usuario:</label>
+            <input type="text" id="nombre" name="nombre" required>
+
+            <label for="rol">Rol:</label>
+            <select id="rol" name="rol">
+                <option value="administrador">Administrador</option>
+                <option value="asesor">Asesor</option>
+                <option value="cliente">Cliente</option>
+            </select>
+
+            <button type="submit">Guardar Usuario</button>
+        </form>
+    </main>
+</body>
+</html>
