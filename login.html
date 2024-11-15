@@ -17,7 +17,7 @@
             </div>
 
             <!-- Formulario de inicio de sesión -->
-            <form action="dashboard.html" method="post">
+            <form id="loginForm">
                 <div class="mb-3">
                     <label for="username" class="form-label">Usuario</label>
                     <input type="text" id="username" name="username" class="form-control" required>
@@ -36,5 +36,30 @@
 
     <!-- Bootstrap JS (Opcional) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Script de autenticación -->
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevenir el envío del formulario
+            
+            // Obtener valores del formulario
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Verificar usuario y contraseña
+            if (username === 'Ronaldo' && password === 'PrimeraPrueba') {
+                // Guardar sesión en localStorage para persistencia
+                localStorage.setItem('isLoggedIn', true);
+                window.location.href = 'index.html'; // Redirigir al dashboard o página principal
+            } else {
+                alert('Usuario o contraseña incorrectos');
+            }
+        });
+
+        // Verificar si el usuario ya está logueado
+        if (localStorage.getItem('isLoggedIn')) {
+            window.location.href = 'index.html'; // Redirigir si ya está logueado
+        }
+    </script>
 </body>
 </html>
