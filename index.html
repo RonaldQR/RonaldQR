@@ -9,6 +9,8 @@
 <body>
     <header>
         <h1>Dashboard - Sistema de Gestión de Pedidos</h1>
+        <!-- Botón de Cerrar Sesión -->
+       
     </header>
     <nav>
         <ul>
@@ -17,11 +19,27 @@
             <li><a href="gestion_pedidos.html">Gestión de Pedidos</a></li>
             <li><a href="facturacion.html">Facturación</a></li>
             <li><a href="logistica.html">Logística y Rutas de Entrega</a></li>
+            <li><button id="logoutBtn" class="btn-logout">Cerrar Sesión</button></li>
         </ul>
     </nav>
     <main>
         <p>Bienvenido al sistema de gestión de pedidos.</p>
     </main>
+
+    <script>
+        // Verificar si el usuario está autenticado
+        if (!localStorage.getItem('isLoggedIn')) {
+            // Si no está logueado, redirigir al login
+            window.location.href = 'login.html';
+        }
+
+        // Función para cerrar sesión
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            // Eliminar la sesión de localStorage
+            localStorage.removeItem('isLoggedIn');
+            // Redirigir al usuario a la página de inicio de sesión
+            window.location.href = 'login.html';
+        });
+    </script>
 </body>
 </html>
-
