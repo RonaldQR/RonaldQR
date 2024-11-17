@@ -1,0 +1,39 @@
+/* Archivo: style.css */
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: #f4f4f4;
+}
+
+#sidebar {
+    transition: all 0.3s ease-in-out;
+    width: 250px;
+}
+
+#sidebar.active {
+    width: 0;
+    overflow: hidden;
+}
+
+#content {
+    transition: all 0.3s ease-in-out;
+    flex-grow: 1;
+    margin-left: 250px;
+}
+
+#content.expanded {
+    margin-left: 0;
+}
+
+.nav-link {
+    padding: 10px;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-logout {
+    margin-top: 20px;
+}

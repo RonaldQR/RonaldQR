@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logística y Rutas de Entrega</title>
+    <link rel="stylesheet" href="style.css"> <!-- Enlace al archivo CSS -->
+</head>
+<body>
+    <header>
+        <h1>Estado de Entrega</h1>
+    </header>
+    <main>
+        <form action="actualizar_estado_entrega.html" method="post">
+            <label for="pedido">Pedido:</label>
+            <input type="text" id="pedido" name="pedido" required>
+
+            <label for="estado">Estado:</label>
+            <select id="estado" name="estado">
+                <option value="recibido">Recibido</option>
+                <option value="en_proceso">En Proceso</option>
+                <option value="en_camino">En Camino</option>
+                <option value="entregado">Entregado</option>
+            </select>
+
+            <button type="submit">Actualizar Estado</button>
+        </form>
+    </main>
+</body>
+</html>
