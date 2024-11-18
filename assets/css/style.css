@@ -646,6 +646,21 @@
 table {
   width: 100%;
   table-layout: auto; /* Esto permite que las columnas se ajusten mejor al contenido */
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+}
+th, td {
+  padding: 8px;
+  text-align: left;
+}
+input {
+  padding: 8px;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 300px;
 }
 
 @media (max-width: 768px) {

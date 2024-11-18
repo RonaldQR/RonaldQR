@@ -10,7 +10,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
     <meta name="theme-color" content="#ffffff">
-    
+
     <title>Gestión de Productos - SGP</title>
 
     <!-- Google Fonts y Vendor CSS Files desde CDN -->
@@ -101,14 +101,20 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Lista de Productos</h5>
-                            <!-- Botón para añadir un nuevo producto -->
                             <button class="btn btn-primary mb-3" data-bs-toggle="modal"
                                 data-bs-target="#addProductModal">
                                 <i class="bi bi-plus-circle"></i> Añadir Producto
                             </button>
+                            <button id="exportBtn" class="btn btn-success mb-3">
+                                <i class="bi bi-file-earmark-excel"></i> Exportar a Excel
+                            </button>
+
+                            <!-- Campo de búsqueda -->
+                            <input type="text" class="form-control mb-3" id="searchProductInput"
+                                placeholder="Buscar producto..." oninput="searchProduct()">
 
                             <!-- Tabla de Productos -->
-                            <table class="table table-hover datatable">
+                            <table class="table table-hover" id="productosTable">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -119,20 +125,7 @@
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>101</td>
-                                        <td>Lubricante XYZ</td>
-                                        <td>Aceites</td>
-                                        <td>$20,000</td>
-                                        <td>50</td>
-                                        <td>
-                                            <button class="btn btn-warning btn-sm">Editar</button>
-                                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                                        </td>
-                                    </tr>
-                                    <!-- Más filas según los datos disponibles -->
-                                </tbody>
+                                <tbody id="productosTableBody"></tbody>
                             </table>
                         </div>
                     </div>
@@ -142,13 +135,13 @@
     </main>
 
     <!-- Modal para añadir producto -->
-    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addProductModalLabel">Añadir Producto</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title">Añadir Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form id="productForm">
@@ -177,7 +170,8 @@
 
     <!-- Vendor JS Files -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="assets/js/gestion_productos.js"></script>
 </body>
 
 </html>

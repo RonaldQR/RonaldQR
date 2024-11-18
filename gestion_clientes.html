@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Inicio - SGP</title>
+    <title>Gestión De Clientes - SGP</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -125,13 +125,19 @@
                                 <i class="bi bi-file-earmark-spreadsheet"></i> Exportar a Excel
                             </button>
 
+                            <!-- Campo de búsqueda -->
+                            <input type="text" class="form-control mb-3" id="searchInput" placeholder="Buscar cliente..."
+                                oninput="searchClient()">
+
                             <!-- Tabla de Clientes -->
                             <table class="table table-hover datatable" id="clientesTable">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
                                         <th>Nombre</th>
+                                        <th>Tipo Doc</th>
                                         <th>Identificación</th>
+                                        <th>Dirección</th>
                                         <th>Teléfono</th>
                                         <th>Correo</th>
                                         <th>Estado</th>
@@ -140,8 +146,8 @@
                                 </thead>
                                 <tbody id="clientesTableBody">
                                     <!-- Filas generadas dinámicamente -->
-                                </tbody>                                
-                            </table>             
+                                </tbody>
+                            </table>
 
                         </div>
                     </div>
@@ -226,7 +232,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script defer src="assets/js/main.js"></script>
 
-   
+
 </body>
 
 </html>
