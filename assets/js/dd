@@ -1,0 +1,129 @@
+document.addEventListener("DOMContentLoaded", () => {
+  // Inicializar modal de Bootstrap
+  const addClientModal = new bootstrap.Modal(
+    document.getElementById("addClientModal")
+  );
+  const clientForm = document.getElementById("clientForm");
+
+  // Cargar los clientes
+  loadClients();
+
+  // Agregar evento al formulario de cliente
+  clientForm.addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevenir el envío normal del formulario
+
+    const client = {
+      name: document.getElementById("clientName").value,
+      type: document.getElementById("clientType").value,
+      id: document.getElementById("clientID").value,
+      address: document.getElementById("clientAddress").value,
+      phone: document.getElementById("clientPhone").value,
+      email: document.getElementById("clientEmail").value,
+      status: document.getElementById("clientStatus").value,
+    };
+
+    // Validar si algún campo está vacío
+    if (Object.values(client).some((value) => !value)) {
+      alert("Por favor, complete todos los campos.");
+      return;
+    }
+
+    // Obtener los clientes de localStorage
+    let clients = JSON.parse(localStorage.getItem("clients")) || [];
+
+    // Verificar si estamos editando un cliente existente
+    const clientId = clientForm.getAttribute("data-edit-client-id");
+    if (clientId) {
+      const clientIndex = clients.findIndex((c) => c.id === clientId);
+      if (clientIndex > -1) {
+        clients[clientIndex] = client;
+      }
+    } else {
+      clients.push(client);
+    }
+
+    // Guardar los cambios en localStorage
+    localStorage.setItem("clients", JSON.stringify(clients));
+
+    // Limpiar el formulario y cerrar el modal
+    clientForm.reset();
+    clientForm.removeAttribute("data-edit-client-id");
+    document.querySelector("#clientForm button").textContent = "Guardar Cliente";
+    addClientModal.hide();
+
+    // Actualizar la tabla de clientes
+    loadClients();
+  });
+});
+
+// Función para cargar los clientes desde localStorage y mostrarlos en la tabla
+function loadClients() {
+  const tableBody = document.querySelector("#clientesTableBody");
+  const clients = JSON.parse(localStorage.getItem("clients")) || [];
+  tableBody.innerHTML = ""; // Limpiar filas anteriores
+
+  clients.forEach((client, index) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${index + 1}</td>
+      <td>${client.name}</td>
+      <td>${client.id}</td>
+      <td>${client.phone}</td>
+      <td>${client.email}</td>
+      <td>${client.status}</td>
+      <td>
+        <button class="btn btn-warning edit-btn" data-id="${client.id}">Editar</button>
+        <button class="btn btn-danger delete-btn" data-id="${client.id}">Eliminar</button>
+      </td>
+    `;
+    tableBody.appendChild(row);
+  });
+
+  // Agregar eventos de edición y eliminación
+  document.querySelectorAll(".edit-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      editClient(button.getAttribute("data-id"));
+    });
+  });
+
+  document.querySelectorAll(".delete-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      deleteClient(button.getAttribute("data-id"));
+    });
+  });
+}
+
+// Función para editar un cliente
+function editClient(clientId) {
+  const clients = JSON.parse(localStorage.getItem("clients")) || [];
+  const client = clients.find((c) => c.id === clientId);
+
+  if (client) {
+    const addClientModal = new bootstrap.Modal(
+      document.getElementById("addClientModal")
+    );
+    addClientModal.show();
+
+    document.getElementById("clientName").value = client.name;
+    document.getElementById("clientType").value = client.type;
+    document.getElementById("clientID").value = client.id;
+    document.getElementById("clientAddress").value = client.address;
+    document.getElementById("clientPhone").value = client.phone;
+    document.getElementById("clientEmail").value = client.email;
+    document.getElementById("clientStatus").value = client.status;
+
+    document.querySelector("#clientForm button").textContent =
+      "Actualizar Cliente";
+    document
+      .getElementById("clientForm")
+      .setAttribute("data-edit-client-id", client.id);
+  }
+}
+
+// Función para eliminar un cliente
+function deleteClient(clientId) {
+  let clients = JSON.parse(localStorage.getItem("clients")) || [];
+  clients = clients.filter((c) => c.id !== clientId);
+  localStorage.setItem("clients", JSON.stringify(clients));
+  loadClients();
+}
