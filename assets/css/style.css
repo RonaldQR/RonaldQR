@@ -636,3 +636,20 @@
       transform: rotate(360deg);
     }
   }
+
+  /* Asegurando que la tabla no se desborde de la tarjeta */
+.card-body {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* Para un desplazamiento más suave en dispositivos móviles */
+}
+
+table {
+  width: 100%;
+  table-layout: auto; /* Esto permite que las columnas se ajusten mejor al contenido */
+}
+
+@media (max-width: 768px) {
+  table {
+    font-size: 12px; /* Reducir el tamaño de la fuente en pantallas pequeñas */
+  }
+}
