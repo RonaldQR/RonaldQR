@@ -3,10 +3,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const pedidosTableBody = document.getElementById("pedidosTableBody");
     const pedidoModal = new bootstrap.Modal(document.getElementById("pedidoModal"));
     const searchInput = document.getElementById("searchPedido");
+    const productosContainer = document.getElementById("productosContainer");
+    const totalPedido = document.getElementById("totalPedido");
   
     let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
   
-    // Renderizar la tabla de pedidos
+    // Renderizar tabla de pedidos
     function renderPedidos() {
       pedidosTableBody.innerHTML = "";
       pedidos.forEach((pedido, index) => {
@@ -14,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
         row.innerHTML = `
           <td>${index + 1}</td>
           <td>${pedido.cliente}</td>
-          <td>${pedido.productos}</td>
+          <td>${pedido.productos.map(p => `${p.nombre} (x${p.cantidad})`).join(", ")}</td>
           <td>${pedido.fecha}</td>
           <td>${pedido.total}</td>
           <td>${pedido.estado}</td>
@@ -27,96 +29,123 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   
-    // Añadir o actualizar pedido
+    // Función para cargar clientes
+    function loadClientes() {
+      const clienteSelect = document.getElementById("cliente");
+      const clients = JSON.parse(localStorage.getItem("clients")) || [];
+      clienteSelect.innerHTML = '<option value="">Seleccione un cliente...</option>';
+      clients.forEach((client) => {
+        clienteSelect.innerHTML += `<option value="${client.id}">${client.name}</option>`;
+      });
+    }
+  
+    // Función para cargar productos
+    function loadProductos() {
+      const productos = JSON.parse(localStorage.getItem("productos")) || [];
+      productosContainer.querySelectorAll(".producto-select").forEach((select) => {
+        select.innerHTML = '<option value="">Seleccione un producto...</option>';
+        productos.forEach((producto) => {
+          select.innerHTML += `<option value="${producto.id}" data-precio="${producto.price}">
+            ${producto.name} - $${producto.price}
+          </option>`;
+        });
+      });
+    }
+  
+    // Función para calcular el total
+    function calculateTotal() {
+      let total = 0;
+      productosContainer.querySelectorAll(".input-group").forEach((row) => {
+        const precio = parseFloat(row.querySelector(".precio-producto").value) || 0;
+        const cantidad = parseFloat(row.querySelector(".cantidad-producto").value) || 0;
+        total += precio * cantidad;
+      });
+      totalPedido.value = `$${total.toFixed(2)}`;
+    }
+  
+    // Evento: Agregar un producto dinámicamente
+    window.addProduct = function () {
+      const productRow = `
+        <div class="input-group mb-2">
+          <select class="form-select producto-select" onchange="updatePrecio(this)" required>
+            <option value="">Seleccione un producto...</option>
+          </select>
+          <input type="number" class="form-control precio-producto" placeholder="Precio" readonly>
+          <input type="number" class="form-control cantidad-producto" placeholder="Cantidad" required>
+          <button class="btn btn-danger" type="button" onclick="removeProduct(this)">-</button>
+        </div>`;
+      productosContainer.insertAdjacentHTML("beforeend", productRow);
+      loadProductos();
+    };
+  
+    // Evento: Actualizar precio del producto
+    window.updatePrecio = function (selectElement) {
+      const precioField = selectElement.parentElement.querySelector(".precio-producto");
+      const selectedOption = selectElement.options[selectElement.selectedIndex];
+      precioField.value = selectedOption.getAttribute("data-precio") || "";
+      calculateTotal();
+    };
+  
+    // Evento: Eliminar un producto
+    window.removeProduct = function (button) {
+      button.parentElement.remove();
+      calculateTotal();
+    };
+  
+    // Guardar pedido
     pedidoForm.addEventListener("submit", function (event) {
       event.preventDefault();
   
-      const cliente = pedidoForm.cliente.value.trim();
-      const productos = pedidoForm.productos.value.trim();
+      const cliente = pedidoForm.cliente.value;
+      const direccion = pedidoForm.direccion.value;
       const metodoPago = pedidoForm.metodoPago.value;
-      const fecha = new Date().toLocaleDateString();
+      const observaciones = pedidoForm.observaciones.value;
   
-      // Validar campos obligatorios
-      if (!cliente || !productos || !metodoPago) {
-        Swal.fire({
-          icon: "warning",
-          title: "Datos incompletos",
-          text: "Por favor, complete todos los campos.",
-        });
+      const productos = Array.from(productosContainer.querySelectorAll(".input-group")).map((row) => ({
+        id: row.querySelector(".producto-select").value,
+        nombre: row.querySelector(".producto-select option:checked").textContent,
+        cantidad: parseFloat(row.querySelector(".cantidad-producto").value),
+        precio: parseFloat(row.querySelector(".precio-producto").value),
+      }));
+  
+      if (!cliente || productos.length === 0 || !metodoPago) {
+        Swal.fire("Error", "Complete todos los campos obligatorios.", "error");
         return;
       }
   
-      const total = calcularTotal(productos); // Calculamos un total ficticio
       const nuevoPedido = {
         cliente,
+        direccion,
+        metodoPago,
         productos,
-        fecha,
-        total,
+        observaciones,
+        fecha: new Date().toLocaleDateString(),
+        total: `$${productos.reduce((sum, p) => sum + p.precio * p.cantidad, 0).toFixed(2)}`,
         estado: "Pendiente",
       };
   
-      // Modo edición
-      const pedidoId = pedidoForm.getAttribute("data-edit-id");
-      if (pedidoId) {
-        pedidos[parseInt(pedidoId)] = nuevoPedido;
-        Swal.fire("Actualizado", "Pedido actualizado correctamente", "success");
-        pedidoForm.removeAttribute("data-edit-id");
-      } else {
-        pedidos.push(nuevoPedido);
-        Swal.fire("Guardado", "Pedido guardado correctamente", "success");
-      }
-  
+      pedidos.push(nuevoPedido);
       localStorage.setItem("pedidos", JSON.stringify(pedidos));
+  
+      Swal.fire("Guardado", "El pedido se guardó correctamente.", "success");
       pedidoForm.reset();
       pedidoModal.hide();
       renderPedidos();
     });
   
-    // Calcular el total del pedido (ejemplo simple)
-    function calcularTotal(productos) {
-      const productosArray = productos.split(",");
-      return productosArray.length * 10000; // Asume que cada producto cuesta 10,000
-    }
-  
-    // Función para editar pedido
-    window.editPedido = function (index) {
-      const pedido = pedidos[index];
-      pedidoForm.cliente.value = pedido.cliente;
-      pedidoForm.productos.value = pedido.productos;
-      pedidoForm.metodoPago.value = pedido.metodoPago;
-      pedidoForm.setAttribute("data-edit-id", index);
-      pedidoModal.show();
-    };
-  
-    // Función para eliminar pedido
-    window.deletePedido = function (index) {
-      Swal.fire({
-        title: "¿Está seguro?",
-        text: "No podrás revertir esta acción",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Sí, eliminar",
-        cancelButtonText: "Cancelar",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          pedidos.splice(index, 1);
-          localStorage.setItem("pedidos", JSON.stringify(pedidos));
-          Swal.fire("Eliminado", "Pedido eliminado correctamente", "success");
-          renderPedidos();
-        }
-      });
-    };
-  
     // Función para buscar pedidos
     searchInput.addEventListener("input", function () {
       const searchTerm = searchInput.value.toLowerCase();
-      const rows = pedidosTableBody.querySelectorAll("tr");
-      rows.forEach((row) => {
-        const text = row.textContent.toLowerCase();
-        row.style.display = text.includes(searchTerm) ? "" : "none";
+      pedidosTableBody.querySelectorAll("tr").forEach((row) => {
+        row.style.display = row.textContent.toLowerCase().includes(searchTerm) ? "" : "none";
       });
     });
   
-    renderPedidos(); // Inicializar tabla al cargar la página
+    // Inicializar
+    document.getElementById("pedidoModal").addEventListener("show.bs.modal", () => {
+      loadClientes();
+      loadProductos();
+    });
+    renderPedidos();
   });
   

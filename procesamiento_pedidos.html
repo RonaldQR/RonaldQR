@@ -143,7 +143,6 @@
         </section>
 
         <!-- Modal para añadir/editar pedido -->
-        <!-- Modal para añadir/editar pedido -->
         <div class="modal fade" id="pedidoModal" tabindex="-1" aria-labelledby="pedidoModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -154,7 +153,7 @@
                     <div class="modal-body">
                         <form id="pedidoForm">
                             <!-- Cliente -->
-                            <div class="mb-3">
+                            <div class="class="form-select"">
                                 <label for="cliente" class="form-label">Cliente</label>
                                 <select class="form-select" id="cliente" required>
                                     <option value="">Seleccione un cliente...</option>
@@ -180,25 +179,38 @@
                             </div>
 
                             <!-- Productos -->
-                            <div class="mb-3">
-                                <label class="form-label">Productos</label>
-                                <div id="productosContainer">
-                                    <div class="input-group mb-2">
-                                        <input type="text" class="form-control" placeholder="Nombre del Producto"
-                                            required>
-                                        <input type="number" class="form-control" placeholder="Cantidad" required>
-                                        <button class="btn btn-danger" type="button"
-                                            onclick="removeProduct(this)">-</button>
+
+                            <div id="productosContainer" class="mb-3">
+                                <div class="input-group mb-2">
+                                    <label class="form-label">Productos</label>
+                                    <button type="button" class="btn btn-secondary" onclick="addProduct()">Añadir Producto</button>
+                                    <div id="productosContainer">
+                                        <div class="input-group mb-2">
+                                            <select class="form-select producto-select " onchange="updatePrecio(this)"
+                                                required>
+                                                <option value="">Seleccione un producto...</option>
+                                                <!-- Opciones cargadas dinámicamente -->
+                                            </select>
+                                            <input type="number" class="form-control precio-producto"
+                                                placeholder="Precio" readonly>
+                                            <input type="number" class="form-control cantidad-producto"
+                                                placeholder="Cantidad" required>
+                                            <button class="btn btn-danger" type="button"
+                                                onclick="removeProduct(this)">-</button>
+                                        </div>
                                     </div>
                                 </div>
-                                <button type="button" class="btn btn-secondary" onclick="addProduct()">Añadir
-                                    Producto</button>
                             </div>
 
                             <!-- Observaciones -->
                             <div class="mb-3">
                                 <label for="observaciones" class="form-label">Observaciones</label>
                                 <textarea class="form-control" id="observaciones" rows="2"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="totalPedido" class="form-label">Total</label>
+                                <input type="text" id="totalPedido" class="form-control" readonly>
                             </div>
 
                             <button type="submit" class="btn btn-primary w-100">Guardar Pedido</button>
