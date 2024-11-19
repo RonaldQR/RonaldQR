@@ -110,15 +110,63 @@
         </div>
 
         <section class="section index">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <form action="generar_factura.html" method="post">
-                                <label for="pedido">Pedido:</label>
-                                <input type="text" id="pedido" name="pedido" required>
+            <!-- Main Content -->
+            <main class="container mt-5">
+                <h1>Gestión de Productos e Inventarios</h1>
 
-                                <button type="submit">Generar Factura</button>
+                <!-- Botón para abrir el modal de agregar/editar producto -->
+                <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#productModal">
+                    <i class="bi bi-plus-circle"></i> Añadir Producto
+                </button>
+
+                <!-- Campo de búsqueda -->
+                <input type="text" id="searchProduct" class="form-control mb-3" placeholder="Buscar producto...">
+
+                <!-- Tabla de productos -->
+                <table class="table table-hover" id="productsTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Categoría</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTableBody"></tbody>
+                </table>
+            </main>
+
+            <!-- Modal para añadir/editar producto -->
+            <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="productModalLabel">Añadir Producto</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="productForm">
+                                <div class="mb-3">
+                                    <label for="productName" class="form-label">Nombre del Producto</label>
+                                    <input type="text" class="form-control" id="productName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="productCategory" class="form-label">Categoría</label>
+                                    <input type="text" class="form-control" id="productCategory" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="productPrice" class="form-label">Precio</label>
+                                    <input type="number" class="form-control" id="productPrice" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="productStock" class="form-label">Stock Inicial</label>
+                                    <input type="number" class="form-control" id="productStock" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Guardar Producto</button>
                             </form>
                         </div>
                     </div>

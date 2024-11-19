@@ -23,12 +23,13 @@
         rel="stylesheet">
 
     <!-- Vendor CSS Files desde CDN -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.snow.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-datatables/7.1.2/style.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Archivo CSS personalizado -->
     <link href="assets/css/style.css" rel="stylesheet">
@@ -104,27 +105,99 @@
     </aside>
 
     <!-- ======= Main Content ======= -->
+    <!-- Main Content -->
     <main id="main" class="main">
         <div class="pagetitle">
-            <h1>Registro De Venta</h1>
+            <h1>Registro de Venta</h1>
         </div>
 
-        <section class="section index">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <form action="generar_factura.html" method="post">
-                                <label for="pedido">Pedido:</label>
-                                <input type="text" id="pedido" name="pedido" required>
+        <!-- Botón para abrir modal de añadir venta -->
+        <section>
+            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#ventaModal">
+                <i class="bi bi-plus-circle"></i> Registrar Venta
+            </button>
+            <input type="text" id="searchVenta" class="form-control mb-3" placeholder="Buscar venta...">
 
-                                <button type="submit">Generar Factura</button>
-                            </form>
-                        </div>
+            <!-- Tabla de ventas -->
+            <table class="table table-hover" id="ventasTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Productos</th>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                        <th>Método de Pago</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="ventasTableBody"></tbody>
+            </table>
+        </section>
+
+        <!-- Modal para añadir/editar venta -->
+        <div class="modal fade" id="ventaModal" tabindex="-1" aria-labelledby="ventaModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ventaModalLabel">Registrar Venta</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="ventaForm">
+                            <!-- Cliente -->
+                            <div class="mb-3">
+                                <label for="cliente" class="form-label">Cliente</label>
+                                <select id="cliente" class="form-select" required>
+                                    <option value="">Seleccione un cliente...</option>
+                                    <!-- Opciones cargadas dinámicamente -->
+                                </select>
+                            </div>
+
+                            <!-- Productos -->
+                            <div class="mb-3">
+                                <label class="form-label">Productos</label>
+                                <div id="productosContainer">
+                                    <div class="input-group mb-2">
+                                        <select class="form-select producto-select" onchange="updatePrecio(this)"
+                                            required>
+                                            <option value="">Seleccione un producto...</option>
+                                            <!-- Opciones cargadas dinámicamente -->
+                                        </select>
+                                        <input type="number" class="form-control precio-producto" placeholder="Precio"
+                                            readonly>
+                                        <input type="number" class="form-control cantidad-producto" placeholder="Cantidad"
+                                            required>
+                                        <button class="btn btn-danger" type="button"
+                                            onclick="removeProduct(this)">-</button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-secondary" onclick="addProduct()">Añadir Producto</button>
+                            </div>
+
+                            <!-- Métodos de Pago -->
+                            <div class="mb-3">
+                                <label for="metodoPago" class="form-label">Método de Pago</label>
+                                <select id="metodoPago" class="form-select" required>
+                                    <option value="">Seleccione...</option>
+                                    <option value="Efectivo">Efectivo</option>
+                                    <option value="Tarjeta">Tarjeta</option>
+                                    <option value="Transferencia">Transferencia</option>
+                                </select>
+                            </div>
+
+                            <!-- Total -->
+                            <div class="mb-3">
+                                <label for="totalVenta" class="form-label">Total</label>
+                                <input type="text" id="totalVenta" class="form-control" readonly>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">Guardar Venta</button>
+                        </form>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     </main>
 
     <!-- Vendor JS Files desde CDN -->
@@ -135,6 +208,7 @@
 
     <!-- Archivo JS personalizado -->
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/registro_venta.js"></script>
     <script>
 
 

@@ -105,35 +105,78 @@
         </ul>
     </aside>
 
-    <!-- ======= Main Content ======= -->
+    <!-- Main Content -->
     <main id="main" class="main">
         <div class="pagetitle">
             <h1>Gestión de Usuarios</h1>
         </div>
 
-        <section class="section index">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <form action="guardar_usuario.html" method="post">
-                                <label for="nombre">Nombre de Usuario:</label>
-                                <input type="text" id="nombre" name="nombre" required>
-                    
-                                <label for="rol">Rol:</label>
-                                <select id="rol" name="rol">
-                                    <option value="administrador">Administrador</option>
-                                    <option value="asesor">Asesor</option>
-                                    <option value="cliente">Cliente</option>
+        <!-- Botón para abrir modal de añadir usuario -->
+        <section>
+            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#userModal">
+                <i class="bi bi-plus-circle"></i> Añadir Usuario
+            </button>
+            <input type="text" id="searchUser" class="form-control mb-3" placeholder="Buscar usuario...">
+
+            <!-- Tabla de usuarios -->
+            <table class="table table-hover" id="usersTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Correo Electrónico</th>
+                        <th>Rol</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody"></tbody>
+            </table>
+        </section>
+
+        <!-- Modal para añadir/editar usuario -->
+        <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="userModalLabel">Añadir Usuario</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="userForm">
+                            <div class="mb-3">
+                                <label for="userName" class="form-label">Nombre Completo</label>
+                                <input type="text" id="userName" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="userEmail" class="form-label">Correo Electrónico</label>
+                                <input type="email" id="userEmail" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="userPassword" class="form-label">Contraseña</label>
+                                <input type="password" id="userPassword" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="userRole" class="form-label">Rol</label>
+                                <select id="userRole" class="form-select" required>
+                                    <option value="Administrador">Administrador</option>
+                                    <option value="Supervisor">Supervisor</option>
+                                    <option value="Usuario Regular">Usuario Regular</option>
                                 </select>
-                    
-                                <button type="submit">Guardar Usuario</button>
-                            </form>
-                        </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="userStatus" class="form-label">Estado</label>
+                                <select id="userStatus" class="form-select" required>
+                                    <option value="Activo">Activo</option>
+                                    <option value="Inactivo">Inactivo</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Guardar Usuario</button>
+                        </form>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     </main>
 
     <!-- Vendor JS Files desde CDN -->

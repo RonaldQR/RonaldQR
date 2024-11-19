@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Facturación - SGP</title>
+    <title>Inicio - SGP</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -106,25 +106,79 @@
     <!-- ======= Main Content ======= -->
     <main id="main" class="main">
         <div class="pagetitle">
-            <h1>Generación de Facturas</h1>
+            <h1>Facturación</h1>
         </div>
 
-        <section class="section index">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <form action="generar_factura.html" method="post">
-                                <label for="pedido">Pedido:</label>
-                                <input type="text" id="pedido" name="pedido" required>
+        <section class="section">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Lista de Facturas</h5>
 
-                                <button type="submit">Generar Factura</button>
-                            </form>
-                        </div>
-                    </div>
+                    <!-- Botón para añadir nueva factura -->
+                    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#facturaModal">
+                        <i class="bi bi-plus-circle"></i> Añadir Factura
+                    </button>
+
+                    <!-- Campo de búsqueda -->
+                    <input type="text" id="searchFactura" class="form-control mb-3" placeholder="Buscar factura...">
+
+                    <!-- Tabla de Facturas -->
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th># Factura</th>
+                                <th>Pedido</th>
+                                <th>Cliente</th>
+                                <th>Total</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="facturasTableBody"></tbody>
+                    </table>
                 </div>
             </div>
         </section>
+
+        <!-- Modal para añadir/editar factura -->
+        <div class="modal fade" id="facturaModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Nueva Factura</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="facturaForm">
+                            <div class="mb-3">
+                                <label for="pedido" class="form-label">Pedido</label>
+                                <select class="form-select" id="pedido" required>
+                                    <option value="">Seleccione un pedido...</option>
+                                    <!-- Opciones dinámicas -->
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="cliente" class="form-label">Cliente</label>
+                                <input type="text" id="cliente" class="form-control" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="totalFactura" class="form-label">Total</label>
+                                <input type="text" id="totalFactura" class="form-control" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="estado" class="form-label">Estado</label>
+                                <select class="form-select" id="estado" required>
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="Pagada">Pagada</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Guardar Factura</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <!-- Vendor JS Files desde CDN -->
@@ -135,11 +189,7 @@
 
     <!-- Archivo JS personalizado -->
     <script src="assets/js/main.js"></script>
-    <script>
-
-
-
-    </script>
+    <script src="assets/js/facturacion.js"></script>
 </body>
 
 </html>

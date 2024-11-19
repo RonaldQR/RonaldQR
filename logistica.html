@@ -110,23 +110,78 @@
         </div>
 
         <section class="section index">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <form action="actualizar_estado_entrega.html" method="post">
-                                <label for="pedido">Pedido:</label>
-                                <input type="text" id="pedido" name="pedido" required>
-                    
-                                <label for="estado">Estado:</label>
-                                <select id="estado" name="estado">
-                                    <option value="recibido">Recibido</option>
-                                    <option value="en_proceso">En Proceso</option>
-                                    <option value="en_camino">En Camino</option>
-                                    <option value="entregado">Entregado</option>
-                                </select>
-                    
-                                <button type="submit">Actualizar Estado</button>
+            <!-- Main Content -->
+            <main class="container mt-5">
+                <h1>Logística y Rutas de Entrega</h1>
+
+                <!-- Botón para abrir el modal de añadir ruta -->
+                <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#routeModal">
+                    <i class="bi bi-plus-circle"></i> Añadir Ruta
+                </button>
+
+                <!-- Tabla de rutas -->
+                <table class="table table-hover" id="routesTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Vehículo</th>
+                            <th>Conductor</th>
+                            <th>Pedidos Asignados</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="routesTableBody"></tbody>
+                </table>
+            </main>
+
+            <!-- Modal para añadir/editar ruta -->
+            <div class="modal fade" id="routeModal" tabindex="-1" aria-labelledby="routeModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="routeModalLabel">Añadir Ruta</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="routeForm">
+                                <!-- Vehículo -->
+                                <div class="mb-3">
+                                    <label for="vehicle" class="form-label">Vehículo</label>
+                                    <select class="form-select" id="vehicle" required>
+                                        <option value="">Seleccione un vehículo...</option>
+                                        <!-- Opciones cargadas dinámicamente -->
+                                    </select>
+                                </div>
+
+                                <!-- Conductor -->
+                                <div class="mb-3">
+                                    <label for="driver" class="form-label">Conductor</label>
+                                    <select class="form-select" id="driver" required>
+                                        <option value="">Seleccione un conductor...</option>
+                                        <!-- Opciones cargadas dinámicamente -->
+                                    </select>
+                                </div>
+
+                                <!-- Pedidos -->
+                                <div class="mb-3">
+                                    <label for="orders" class="form-label">Pedidos</label>
+                                    <select class="form-select" id="orders" multiple required>
+                                        <!-- Opciones cargadas dinámicamente -->
+                                    </select>
+                                </div>
+
+                                <!-- Estado -->
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">Estado</label>
+                                    <select class="form-select" id="status" required>
+                                        <option value="Pendiente">Pendiente</option>
+                                        <option value="En Proceso">En Proceso</option>
+                                        <option value="Completada">Completada</option>
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100">Guardar Ruta</button>
                             </form>
                         </div>
                     </div>
@@ -143,6 +198,7 @@
 
     <!-- Archivo JS personalizado -->
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/logistica_rutas.js"></script>
     <script>
 
 
